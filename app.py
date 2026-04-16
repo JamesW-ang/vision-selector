@@ -365,7 +365,7 @@ def render_illuminance_section(col):
         
         e_const = st.number_input(
             "常亮参考照度 (lux)",
-            value=10000.0, min_value=100, step=1000.0, format="%.0f"
+            value=10000.0, min_value=100.0, step=1000.0, format="%.0f"
         )
         
         t_flash = st.number_input(
@@ -379,10 +379,10 @@ def render_illuminance_section(col):
         
         # 可用照度输入
         e_flash_available = st.number_input(
-            "光源峰值照度 (lux)",
-            value=1_410_000.0, min_value=10000, step=10000.0, format="%.0f",
-            help="LED光源峰值照度，通常在 datasheet 中可查"
-        )
+        "光源峰值照度 (lux)",
+        value=1_410_000.0, min_value=10000.0, step=10000.0, format="%.0f",
+        help="LED光源峰值照度，通常在 datasheet 中可查"
+    )
         
         # 计算光通量余量
         margin = e_flash_available / e_flash_required if e_flash_required > 0 else 0
@@ -506,7 +506,8 @@ def render_vibration_section(col, pixel_eq_target=1.0):
                 key="needed_time"
             ) / 1000
             amp_needed, _ = calculate_vibration_decay(a0, zeta, f_vib, needed_time)
-            blur_needed = calculate_motion_blur(amp_needed * omega_n := 2 * math.pi * f_vib, t_exp_s, pixel_eq_target) / 1e6 * amp_needed * omega_n * 1e6
+            omega_n = 2 * math.pi * f_vib
+            blur_needed = calculate_motion_blur(amp_needed * omega_n, t_exp_s, pixel_eq_target) / 1e6 * amp_needed * omega_n * 1e6
             
             st.markdown(f"""
             <div class="error-box">
